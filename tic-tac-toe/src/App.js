@@ -19,34 +19,32 @@ class App extends Component {
   
   clicked(box){
     if(this.gameState.gameEnded || this.gameState.gameLocked) return;
-
+    let playerSymbol = this.gameState.turn
+    console.log(playerSymbol)
     if(this.gameState.board[box.dataset.square] === ""){
       this.gameState.board[box.dataset.square] = this.gameState.turn  
       box.innerText = this.gameState.turn;
       this.gameState.turn = this.gameState.turn === 'X' ? 'O' : 'X'
       
       this.gameState.totalMoves++;
+      //can use this.gameState.turn to indicate whose turn it is
     }    
+
     const result = this.checkWinner();
-    if(result === "X"){
+    if(result === playerSymbol){
       this.gameState.gameEnded = true
       this.setState({
-        winner: "X",
-        winnerLine: "Match won by X"
+        winner: playerSymbol,
+        winnerLine: "Match won by " + playerSymbol
       })
-    } else if (result === "O"){
-      this.gameState.gameEnded = true
-      this.setState({
-        winner: "O",
-        winnerLine: "Match won by O!"
-      })
-    } else if (result === "draw"){
+    } else if(result === "draw"){
       this.gameState.gameEnded = true
       this.setState({
         winner: "draw",
-        winnerLine: "Its a draw!"
+        winnerLine: "It's a draw"
       })
     }
+    
 
     if(this.gameState.turn === 'O' && !this.gameState.gameEnded) {
       this.gameState.gameLocked = true;
